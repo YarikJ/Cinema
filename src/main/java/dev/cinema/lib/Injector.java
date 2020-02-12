@@ -1,4 +1,4 @@
-package myCinema.lib;
+package dev.cinema.lib;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Injector {
-    private static final Map<String, Injector> injectors = new HashMap<>();
+
+    private static final Map<String, dev.cinema.lib.Injector> injectors = new HashMap<>();
 
     private Map<Class, Object> instanceOfClasses = new HashMap<>();
     private List<Class> classes = new ArrayList<>();
@@ -25,11 +26,11 @@ public class Injector {
         }
     }
 
-    public static Injector getInstance(String mainPackageName) {
+    public static dev.cinema.lib.Injector getInstance(String mainPackageName) {
         if (injectors.containsKey(mainPackageName)) {
             return injectors.get(mainPackageName);
         }
-        Injector injector = new Injector(mainPackageName);
+        dev.cinema.lib.Injector injector = new dev.cinema.lib.Injector(mainPackageName);
         injectors.put(mainPackageName, injector);
         return injector;
     }
@@ -176,4 +177,5 @@ public class Injector {
         }
         return classes;
     }
+
 }
