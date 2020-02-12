@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class Injector {
 
-    private static final Map<String, dev.cinema.lib.Injector> injectors = new HashMap<>();
+    private static final Map<String, Injector> injectors = new HashMap<>();
 
     private Map<Class, Object> instanceOfClasses = new HashMap<>();
     private List<Class> classes = new ArrayList<>();
@@ -26,11 +26,11 @@ public class Injector {
         }
     }
 
-    public static dev.cinema.lib.Injector getInstance(String mainPackageName) {
+    public static Injector getInstance(String mainPackageName) {
         if (injectors.containsKey(mainPackageName)) {
             return injectors.get(mainPackageName);
         }
-        dev.cinema.lib.Injector injector = new dev.cinema.lib.Injector(mainPackageName);
+        Injector injector = new Injector(mainPackageName);
         injectors.put(mainPackageName, injector);
         return injector;
     }
