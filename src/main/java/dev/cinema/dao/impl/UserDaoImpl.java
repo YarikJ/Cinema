@@ -1,31 +1,30 @@
 package dev.cinema.dao.impl;
 
-import dev.cinema.dao.MovieDao;
+import dev.cinema.dao.UserDao;
 import dev.cinema.lib.Dao;
-import dev.cinema.models.Movie;
+import dev.cinema.models.User;
 import dev.cinema.util.HibernateUtil;
 
-import java.util.List;
+import javax.persistence.Query;
 
-import javax.persistence.criteria.CriteriaQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @Dao
-public class MovieDaoImpl implements MovieDao {
+public class UserDaoImpl implements UserDao {
     private static final Logger LOGGER = LogManager.getLogger(MovieDaoImpl.class);
 
     @Override
-    public Movie add(Movie movie) {
+    public User add(User user) {
         Transaction transaction = null;
         try (Session session  = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Long movieId = (Long) session.save(movie);
+            Long userId = (Long) session.save(user);
             transaction.commit();
-            movie.setId(movieId);
-            return movie;
+            user.setId(userId);
+            return user;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -36,14 +35,13 @@ public class MovieDaoImpl implements MovieDao {
     }
 
     @Override
-    public List<Movie> getAll() {
-        try (Session session  = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<Movie> criteriaQuery = session.getCriteriaBuilder()
-                    .createQuery(Movie.class);
-            criteriaQuery.from(Movie.class);
-            return session.createQuery(criteriaQuery).getResultList();
+    public User findByEmail(String email) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query query = session.createQuery("from User where email = :email");
+            query.setParameter("email", email);
+            return (User) query.getSingleResult();
         } catch (Exception e) {
-            LOGGER.error("Error retrieving all movies", e);
+            LOGGER.error("Error retrieving user with email " + email, e);
             throw new RuntimeException(e);
         }
     }

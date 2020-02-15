@@ -39,7 +39,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
             LOGGER.error("Error retrieving all available movie sessions for" + date, e);
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 
@@ -57,7 +57,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
                 transaction.rollback();
             }
             LOGGER.error("Can't insert movie session entity!", e);
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 }
