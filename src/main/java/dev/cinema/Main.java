@@ -4,10 +4,12 @@ import dev.cinema.lib.Injector;
 import dev.cinema.models.CinemaHall;
 import dev.cinema.models.Movie;
 import dev.cinema.models.MovieSession;
+import dev.cinema.models.User;
 import dev.cinema.service.AuthenticationService;
 import dev.cinema.service.CinemaHallService;
 import dev.cinema.service.MovieService;
 import dev.cinema.service.MovieSessionService;
+import dev.cinema.service.ShoppingCartService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -79,9 +81,12 @@ public class Main {
         System.out.println(authenticationService
                 .register("first@gmail.com", "111"));
 
-        System.out.println(authenticationService.login("you@gmail.com", "111"));
-
-        System.out.println(authenticationService.login("first@gmail.com", "111"));
-        System.out.println(authenticationService.login("you@gmail.com", "222"));
+        // add ticket and register shopping cart
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        User user = authenticationService.login("first@gmail.com", "111");
+        shoppingCartService.registerNewShoppingCart(user);
+        shoppingCartService.addSession(movieSession1, user);
+        shoppingCartService.addSession(movieSession2, user);
     }
 }
