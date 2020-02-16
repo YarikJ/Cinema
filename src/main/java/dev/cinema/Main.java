@@ -13,12 +13,7 @@ import dev.cinema.service.ShoppingCartService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class Main {
-    private static final Logger LOGGER = LogManager.getLogger(Main.class);
     private static Injector injector = Injector.getInstance("dev.cinema");
 
     public static void main(String[] args) {

@@ -7,14 +7,11 @@ import dev.cinema.util.HibernateUtil;
 
 import javax.persistence.Query;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-    private static final Logger LOGGER = LogManager.getLogger(MovieDaoImpl.class);
 
     @Override
     public User add(User user) {
@@ -29,8 +26,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            LOGGER.error("Can't insert movie entity!", e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't insert movie entity!", e);
         }
     }
 
@@ -41,8 +37,7 @@ public class UserDaoImpl implements UserDao {
             query.setParameter("email", email);
             return (User) query.getSingleResult();
         } catch (Exception e) {
-            LOGGER.error("Error retrieving user with email " + email, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error retrieving user with email " + email, e);
         }
     }
 }
