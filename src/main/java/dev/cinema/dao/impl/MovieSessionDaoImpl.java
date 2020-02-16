@@ -15,15 +15,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @Dao
 public class MovieSessionDaoImpl implements MovieSessionDao {
-    private static final Logger LOGGER = LogManager.getLogger(MovieSessionDaoImpl.class);
-
     @Override
     public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -38,8 +34,8 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             criteriaQuery.select(movieSessionRoot).where(predicates);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
-            LOGGER.error("Error retrieving all available movie sessions for" + date, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error retrieving all available movie sessions for"
+                    + date, e);
         }
     }
 
@@ -56,8 +52,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            LOGGER.error("Can't insert movie session entity!", e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't insert movie session entity!", e);
         }
     }
 }
