@@ -4,6 +4,7 @@ import dev.cinema.lib.Injector;
 import dev.cinema.models.CinemaHall;
 import dev.cinema.models.Movie;
 import dev.cinema.models.MovieSession;
+import dev.cinema.service.AuthenticationService;
 import dev.cinema.service.CinemaHallService;
 import dev.cinema.service.MovieService;
 import dev.cinema.service.MovieSessionService;
@@ -11,11 +12,7 @@ import dev.cinema.service.MovieSessionService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class Main {
-    private static Logger logger = LogManager.getLogger(Main.class);
     private static Injector injector = Injector.getInstance("dev.cinema");
 
     public static void main(String[] args) {
@@ -53,13 +50,13 @@ public class Main {
         MovieSession movieSession1 = new MovieSession();
         movieSession1.setMovie(movie1);
         movieSession1.setShowTime(LocalDateTime.of(2020, 2,
-                14, 20, 0));
+                15, 20, 0));
         movieSession1.setCinemaHall(redHall);
 
         MovieSession movieSession2 = new MovieSession();
         movieSession2.setMovie(movie2);
         movieSession2.setShowTime(LocalDateTime.of(2020, 2,
-                14, 19, 0));
+                15, 19, 0));
         movieSession2.setCinemaHall(blueHall);
 
         MovieSessionService movieSessionService
@@ -68,5 +65,19 @@ public class Main {
         movieSessionService.add(movieSession2);
         System.out.println(movieSessionService.findAvailableSessions(1L, LocalDate.now()));
         System.out.println(movieSessionService.findAvailableSessions(2L, LocalDate.now()));
+
+        // create user
+        AuthenticationService authenticationService
+                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        authenticationService.register("me@gmail.com", "111");
+        authenticationService.register("you@gmail.com", "111");
+
+        System.out.println(authenticationService
+                .register("first@gmail.com", "111"));
+
+        System.out.println(authenticationService.login("you@gmail.com", "111"));
+
+        System.out.println(authenticationService.login("first@gmail.com", "111"));
+        System.out.println(authenticationService.login("you@gmail.com", "222"));
     }
 }

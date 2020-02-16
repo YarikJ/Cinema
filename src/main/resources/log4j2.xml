@@ -22,6 +22,7 @@
         <Logger name="myCinema" level="debug" additivity="true">
             <appender-ref ref="fileLogger" level="error" />
         </Logger>
+
         <Root level="debug" additivity="false">
             <appender-ref ref="console" />
         </Root>
