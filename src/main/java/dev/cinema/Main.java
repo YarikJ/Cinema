@@ -84,11 +84,14 @@ public class Main {
         shoppingCartService.registerNewShoppingCart(user);
 
         shoppingCartService.addSession(movieSession1, user);
+        System.out.println(shoppingCartService.getByUser(user));
+
         shoppingCartService.addSession(movieSession2, user);
 
         User user1 = authenticationService.login("you@gmail.com", "111");
         shoppingCartService.registerNewShoppingCart(user1);
 
+        shoppingCartService.addSession(movieSession1, user1);
         shoppingCartService.addSession(movieSession1, user1);
         shoppingCartService.addSession(movieSession1, user1);
     }
