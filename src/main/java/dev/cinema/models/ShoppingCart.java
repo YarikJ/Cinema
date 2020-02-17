@@ -3,7 +3,6 @@ package dev.cinema.models;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
@@ -16,7 +15,7 @@ import javax.persistence.Table;
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany (fetch = FetchType.EAGER)
+    @OneToMany
     private List<Ticket> tickets;
     @OneToOne
     @MapsId

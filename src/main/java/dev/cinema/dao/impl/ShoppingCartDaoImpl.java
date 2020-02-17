@@ -6,6 +6,7 @@ import dev.cinema.models.ShoppingCart;
 import dev.cinema.models.User;
 import dev.cinema.util.HibernateUtil;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -32,7 +33,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public ShoppingCart getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(ShoppingCart.class, user.getId());
+            ShoppingCart shoppingCart = session.get(ShoppingCart.class, user.getId());
+            Hibernate.initialize(shoppingCart.getTickets());
+            return shoppingCart;
         } catch (Exception e) {
             throw new RuntimeException("Error retrieving shopping cart of user with id "
                     + user.getId(), e);

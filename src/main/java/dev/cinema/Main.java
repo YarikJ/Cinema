@@ -82,7 +82,14 @@ public class Main {
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         User user = authenticationService.login("first@gmail.com", "111");
         shoppingCartService.registerNewShoppingCart(user);
+
         shoppingCartService.addSession(movieSession1, user);
         shoppingCartService.addSession(movieSession2, user);
+
+        User user1 = authenticationService.login("you@gmail.com", "111");
+        shoppingCartService.registerNewShoppingCart(user1);
+
+        shoppingCartService.addSession(movieSession1, user1);
+        shoppingCartService.addSession(movieSession1, user1);
     }
 }

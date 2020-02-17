@@ -10,6 +10,8 @@ import dev.cinema.models.Ticket;
 import dev.cinema.models.User;
 import dev.cinema.service.ShoppingCartService;
 
+import java.util.ArrayList;
+
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
@@ -39,6 +41,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
+        shoppingCart.setTickets(new ArrayList<>());
         shoppingCartDao.add(shoppingCart);
     }
 }
