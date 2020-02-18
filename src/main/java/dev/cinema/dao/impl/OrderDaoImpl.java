@@ -32,6 +32,12 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getOrderHistory(User user) {
-        return null;
+        try (Session session  = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("select orders from Order orders"
+                    + " join fetch orders.tickets where orders.user = :user", Order.class)
+                    .setParameter("user", user).getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving all orders", e);
+        }
     }
 }
