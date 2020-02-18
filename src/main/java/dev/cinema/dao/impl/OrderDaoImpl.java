@@ -16,7 +16,7 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public Order completeOrder(Order order) {
         Transaction transaction = null;
-        try (Session session  = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             Long orderId = (Long) session.save(order);
             transaction.commit();
@@ -32,8 +32,8 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getOrderHistory(User user) {
-        try (Session session  = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("select orders from Order orders"
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("select distinct orders from Order orders"
                     + " join fetch orders.tickets where orders.user = :user", Order.class)
                     .setParameter("user", user).getResultList();
         } catch (Exception e) {

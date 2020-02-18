@@ -102,5 +102,13 @@ public class Main {
         ShoppingCart shoppingCart1 = shoppingCartService.getByUser(user1);
         orderService.completeOrder(shoppingCart1.getTickets(), user1);
         System.out.println(orderService.getOrderHistory(user1));
+
+        shoppingCartService.addSession(movieSession1, user1);
+        shoppingCartService.addSession(movieSession1, user1);
+        shoppingCartService.addSession(movieSession1, user1);
+
+        ShoppingCart shoppingCart2 = shoppingCartService.getByUser(user1);
+        orderService.completeOrder(shoppingCart2.getTickets(), user1);
+        System.out.println(orderService.getOrderHistory(user1));
     }
 }
