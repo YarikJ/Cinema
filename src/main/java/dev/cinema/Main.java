@@ -4,11 +4,13 @@ import dev.cinema.lib.Injector;
 import dev.cinema.models.CinemaHall;
 import dev.cinema.models.Movie;
 import dev.cinema.models.MovieSession;
+import dev.cinema.models.ShoppingCart;
 import dev.cinema.models.User;
 import dev.cinema.service.AuthenticationService;
 import dev.cinema.service.CinemaHallService;
 import dev.cinema.service.MovieService;
 import dev.cinema.service.MovieSessionService;
+import dev.cinema.service.OrderService;
 import dev.cinema.service.ShoppingCartService;
 
 import java.time.LocalDate;
@@ -94,5 +96,19 @@ public class Main {
         shoppingCartService.addSession(movieSession1, user1);
         shoppingCartService.addSession(movieSession1, user1);
         shoppingCartService.addSession(movieSession1, user1);
+
+        // complete order
+        OrderService orderService = (OrderService) injector.getInstance(OrderService.class);
+        ShoppingCart shoppingCart1 = shoppingCartService.getByUser(user1);
+        orderService.completeOrder(shoppingCart1.getTickets(), user1);
+        System.out.println(orderService.getOrderHistory(user1));
+
+        shoppingCartService.addSession(movieSession1, user1);
+        shoppingCartService.addSession(movieSession1, user1);
+        shoppingCartService.addSession(movieSession1, user1);
+
+        ShoppingCart shoppingCart2 = shoppingCartService.getByUser(user1);
+        orderService.completeOrder(shoppingCart2.getTickets(), user1);
+        System.out.println(orderService.getOrderHistory(user1));
     }
 }

@@ -57,4 +57,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + shoppingCart.getId(), e);
         }
     }
+
+    @Override
+    public void clear(ShoppingCart shoppingCart) {
+        shoppingCart.setTickets(null);
+        update(shoppingCart);
+    }
 }
