@@ -6,6 +6,8 @@ import dev.cinema.models.ShoppingCart;
 import dev.cinema.models.User;
 import dev.cinema.util.HibernateUtil;
 
+import java.util.ArrayList;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -60,7 +62,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.setTickets(null);
+        shoppingCart.setTickets(new ArrayList<>());
         update(shoppingCart);
     }
 }
