@@ -1,22 +1,28 @@
 package dev.cinema.dao.impl;
 
 import dev.cinema.dao.OrderDao;
-import dev.cinema.lib.Dao;
 import dev.cinema.models.Order;
 import dev.cinema.models.User;
-import dev.cinema.util.HibernateUtil;
 
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class OrderDaoImpl implements OrderDao {
+    private final SessionFactory sessionFactory;
+
+    public OrderDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public Order completeOrder(Order order) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             Long orderId = (Long) session.save(order);
             transaction.commit();
@@ -32,7 +38,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getOrderHistory(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return session.createQuery("select distinct orders from Order orders"
                     + " join fetch orders.tickets where orders.user = :user", Order.class)
                     .setParameter("user", user).getResultList();
