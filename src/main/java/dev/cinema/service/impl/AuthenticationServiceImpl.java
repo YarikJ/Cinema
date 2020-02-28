@@ -3,6 +3,7 @@ package dev.cinema.service.impl;
 import dev.cinema.exceptions.AuthenticationException;
 import dev.cinema.models.User;
 import dev.cinema.service.AuthenticationService;
+import dev.cinema.service.ShoppingCartService;
 import dev.cinema.service.UserService;
 import dev.cinema.util.HashUtil;
 
@@ -11,9 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserService userService;
+    private final ShoppingCartService shoppingCartService;
 
-    public AuthenticationServiceImpl(UserService userService) {
+    public AuthenticationServiceImpl(UserService userService,
+                                     ShoppingCartService shoppingCartService) {
         this.userService = userService;
+        this.shoppingCartService = shoppingCartService;
     }
 
     @Override
@@ -32,6 +36,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         byte[] salt = HashUtil.getSalt();
         user.setSalt(salt);
         user.setPassword(HashUtil.hashPassword(password, salt));
-        return userService.add(user);
+        User registeredUser = userService.add(user);
+        shoppingCartService.registerNewShoppingCart(registeredUser);
+        return registeredUser;
     }
 }

@@ -45,4 +45,13 @@ public class UserDaoImpl implements UserDao {
             throw new RuntimeException("Error retrieving user with email " + email, e);
         }
     }
+
+    @Override
+    public User get(Long userId) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(User.class, userId);
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving user with id " + userId, e);
+        }
+    }
 }

@@ -22,6 +22,11 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    public Movie get(Long movieId) {
+        return movieDao.get(movieId);
+    }
+
+    @Override
     public List<Movie> getAll() {
         return movieDao.getAll();
     }
