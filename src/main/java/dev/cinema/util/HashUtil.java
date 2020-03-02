@@ -1,7 +1,5 @@
 package dev.cinema.util;
 
-import dev.cinema.dao.impl.CinemaHallDaoImpl;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -10,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class HashUtil {
-    private static final Logger LOGGER = LogManager.getLogger(CinemaHallDaoImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(HashUtil.class);
 
     public static byte[] getSalt() {
         SecureRandom random = new SecureRandom();
