@@ -2,8 +2,14 @@ package dev.cinema.models.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
 public class ShoppingCartRequestDto {
+    @NotNull
+    @Email(regexp = "^(.+)@(.+)$")
     private String userEmail;
+    @NotNull
     private List<TicketDto> dtoTickets;
 
     public String getUserEmail() {
