@@ -11,14 +11,17 @@ import dev.cinema.service.OrderService;
 import dev.cinema.service.ShoppingCartService;
 import dev.cinema.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,7 +39,7 @@ public class OrderController {
     }
 
     @PostMapping("/complete")
-    public void completeOrder(@RequestBody OrderRequestDto orderRequestDto) {
+    public void completeOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) {
         User user = userService.findByEmail(orderRequestDto.getUserEmail());
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
         orderService.completeOrder(shoppingCart.getTickets(), user);
@@ -44,8 +47,17 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<OrderResponseDto> getAllOrders(@RequestParam Long userId) {
-        User user = userService.get(userId);
+    public List<OrderResponseDto> getAllOrders(Principal principal) {
+        User user;
+        String userName;
+        if (principal instanceof UserDetails) {
+            UserDetails details = (UserDetails) principal;
+            userName = details.getUsername();
+
+        } else {
+            userName = principal.getName();
+        }
+        user = userService.findByEmail(userName);
         return orderService.getOrderHistory(user)
                 .stream()
                 .map(this::convertToDto)

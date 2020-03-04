@@ -13,6 +13,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,13 +40,15 @@ public class MovieSessionController {
     }
 
     @PostMapping
-    public void addMovieSession(@RequestBody MovieSessionRequestDto movieSessionRequestDto) {
+    public void addMovieSession(@RequestBody @Valid MovieSessionRequestDto movieSessionRequestDto) {
         movieSessionService.add(convertFromDto(movieSessionRequestDto));
     }
 
     @GetMapping("/available")
-    public List<MovieSessionResponseDto> getAllAvailableMovieSessions(@RequestParam Long movieId,
-                                                                     @RequestParam String date) {
+    public List<MovieSessionResponseDto> getAllAvailableMovieSessions(@RequestParam
+                                                                          @NotNull Long movieId,
+                                                                      @RequestParam
+                                                                      @NotNull String date) {
         return movieSessionService.findAvailableSessions(movieId,
                 LocalDate.parse(date, dateTimeFormatter))
                 .stream()

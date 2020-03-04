@@ -1,7 +1,13 @@
 package dev.cinema.models.dto;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+
 public class CinemaHallRequestDto {
+    @NotNull
+    @Max(value = 200)
     private int capacity;
+    @NotNull
     private String description;
 
     public int getCapacity() {

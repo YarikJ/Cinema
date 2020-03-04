@@ -4,6 +4,8 @@ import dev.cinema.models.User;
 import dev.cinema.models.dto.UserResponseDto;
 import dev.cinema.service.UserService;
 
+import javax.validation.constraints.Email;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +19,7 @@ public class UserController {
     }
 
     @GetMapping("/users/email")
-    public UserResponseDto getUserByEmail(@RequestParam String email) {
+    public UserResponseDto getUserByEmail(@RequestParam @Email String email) {
         return convertToDto(userService.findByEmail(email));
     }
 

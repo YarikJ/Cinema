@@ -12,14 +12,17 @@ import dev.cinema.service.MovieService;
 import dev.cinema.service.ShoppingCartService;
 import dev.cinema.service.UserService;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,15 +42,33 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/add-movie-session")
-    public void addMovieSession(@RequestBody MovieSessionRequestDto movieSessionRequestDto,
-                                @RequestParam Long userId) {
-        User user = userService.get(userId);
+    public void addMovieSession(@RequestBody @Valid MovieSessionRequestDto movieSessionRequestDto,
+                                Principal principal) {
+        User user;
+        String userName;
+        if (principal instanceof UserDetails) {
+            UserDetails details = (UserDetails) principal;
+            userName = details.getUsername();
+
+        } else {
+            userName = principal.getName();
+        }
+        user = userService.findByEmail(userName);
         shoppingCartService.addSession(convertFromDto(movieSessionRequestDto), user);
     }
 
     @GetMapping("/by-user")
-    public ShoppingCartRequestDto getByUser(@RequestParam Long userId) {
-        User user = userService.get(userId);
+    public ShoppingCartRequestDto getByUser(Principal principal) {
+        User user;
+        String userName;
+        if (principal instanceof UserDetails) {
+            UserDetails details = (UserDetails) principal;
+            userName = details.getUsername();
+
+        } else {
+            userName = principal.getName();
+        }
+        user = userService.findByEmail(userName);
         return convertToDto(shoppingCartService.getByUser(user));
     }
 
