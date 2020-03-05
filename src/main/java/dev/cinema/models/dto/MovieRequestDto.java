@@ -3,9 +3,9 @@ package dev.cinema.models.dto;
 import javax.validation.constraints.NotNull;
 
 public class MovieRequestDto {
-    @NotNull
+    @NotNull(message = "provide movie title")
     private String title;
-    @NotNull
+    @NotNull(message = "Please provide movie description")
     private String description;
 
     public String getTitle() {

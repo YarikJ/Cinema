@@ -4,10 +4,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 public class CinemaHallRequestDto {
-    @NotNull
-    @Max(value = 200)
+    @Max(value = 200, message = "Capacity should be less then 200")
     private int capacity;
-    @NotNull
+    @NotNull(message = "Provide cinema hall description")
     private String description;
 
     public int getCapacity() {

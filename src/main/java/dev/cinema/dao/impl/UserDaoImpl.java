@@ -3,8 +3,6 @@ package dev.cinema.dao.impl;
 import dev.cinema.dao.UserDao;
 import dev.cinema.models.User;
 
-import javax.persistence.Query;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -31,16 +29,16 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't insert movie entity!", e);
+            throw new RuntimeException("Could not insert user entity!", e);
         }
     }
 
     @Override
     public User findByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
-            Query query = session.createQuery("from User where email = :email");
-            query.setParameter("email", email);
-            return (User) query.getSingleResult();
+            return session.createQuery("select user from User user"
+                    + " join fetch user.roles where user.email = :email", User.class)
+                    .setParameter("email", email).getSingleResult();
         } catch (Exception e) {
             throw new RuntimeException("Error retrieving user with email " + email, e);
         }

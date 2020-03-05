@@ -12,12 +12,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @PropertySource("classpath:db.properties")
 @ComponentScan(basePackages = {
         "dev.cinema.service",
-        "dev.cinema.dao"
+        "dev.cinema.dao",
+        "dev.cinema.security"
 })
 public class AppConfig {
     @Autowired
@@ -47,5 +50,10 @@ public class AppConfig {
         sessionFactory.setHibernateProperties(properties);
         sessionFactory.setPackagesToScan("dev.cinema.models");
         return sessionFactory;
+    }
+
+    @Bean
+    public PasswordEncoder getEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

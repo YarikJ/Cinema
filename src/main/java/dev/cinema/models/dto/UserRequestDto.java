@@ -7,16 +7,15 @@ import javax.validation.constraints.NotNull;
 
 @FieldsValueMatch(
         field = "password",
-        fieldMatch = "repeatPassword",
-        message = "Passwords do not match!"
+        fieldMatch = "repeatPassword"
 )
 public class UserRequestDto {
-    @NotNull
+    @NotNull(message = "enter email")
     @Email(regexp = "^(.+)@(.+)$")
     private String email;
-    @NotNull
+    @NotNull(message = "enter password")
     private String password;
-    @NotNull
+    @NotNull(message = "confirm password")
     private String repeatPassword;
 
     public String getRepeatPassword() {
