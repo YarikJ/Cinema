@@ -52,7 +52,6 @@ public class AppConfig {
         return sessionFactory;
     }
 
-
     @Bean
     public PasswordEncoder getEncoder() {
         return new BCryptPasswordEncoder();
