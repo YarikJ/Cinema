@@ -4,7 +4,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 public class CinemaHallRequestDto {
-    @NotNull
     @Max(value = 200)
     private int capacity;
     @NotNull
